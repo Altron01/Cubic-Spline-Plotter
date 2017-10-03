@@ -77,10 +77,7 @@ def add_point(point):
         new_point = a[a.__len__() - 1]
         pen = m(a[a.__len__() - 2], new_point)
         a.append(new_point)
-        if pen < 0:
-            a.append(((new_point[0] + 0.5), (new_point[1] - 1)))
-        else:
-            a.append(((new_point[0] + 0.5), (new_point[1] + 1)))
+        a.append(((new_point[0] + 0.5), linear_f(new_point,  (new_point[0] + 0.5), pen)))
     a.append(point)
     a.sort(key=lambda x: x[0])
     pass
