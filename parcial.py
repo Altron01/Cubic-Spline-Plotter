@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import numpy as np
-import scipy
 
-from qtpy.QtGui import *
+
+import qtpy.QtGui as gui
 import qtpy.QtWidgets as wid
 import sys
 #a
@@ -100,8 +99,8 @@ def draw(p):
        f_y.append(final_data[i][1]) 
     plt.axis([p[0][0], p[p.__len__() - 1][0], min(f_y), max(f_y)])
     plt.plot(f_x, f_y)
+    plt.savefig("spline.png")
     plt.show()
-    plt.savefig('spline.png')
     return
 
 def window():
@@ -120,7 +119,7 @@ def window():
     l = wid.QLabel(w)
     l.setText("Trabajo de Algebra Lineal!")
     l.move(170, 50)
-    l.setFont(QFont('SansSerif', 20))
+    l.setFont(gui.QFont('SansSerif', 20))
 
     # information
     l1 = wid.QLabel(w)
@@ -141,7 +140,7 @@ def window():
     ty.setGeometry(130, 145, 50, 20)
 
     i1 = wid.QLabel(w)
-    i1.setPixmap(QPixmap("data.png"))
+    i1.setPixmap(gui.QPixmap("data.png"))
     i1.move(200, 200)
 
     # Functions to add
@@ -163,6 +162,8 @@ def window():
         labels.setText(temp)
         #a = [(0, 0), (2, 4), (3, 2), (6, 3), (6, 3), (7, 4), (8, 1)]
         draw(a)
+        i1.setPixmap(gui.QPixmap("spline.png"))
+        i1.setGeometry(200,200,432,288)
         pass
         # Boton 1
     
