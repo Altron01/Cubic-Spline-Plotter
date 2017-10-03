@@ -82,6 +82,7 @@ def add_point(point):
         else:
             a.append(((new_point[0] + 0.5), (new_point[1] + 1)))
     a.append(point)
+    a.sort(key=lambda x: x[0])
     pass
 
 def draw(p):
@@ -100,7 +101,7 @@ def draw(p):
     for i in range(0, final_data.__len__()):
        f_x.append(final_data[i][0]) 
        f_y.append(final_data[i][1]) 
-    plt.axis([p[0][0], p[p.__len__() - 1][0], -10, 10])
+    plt.axis([p[0][0], p[p.__len__() - 1][0], min(f_y), max(f_y)])
     plt.plot(f_x, f_y)
     plt.show()
     plt.savefig('spline.png')
