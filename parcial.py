@@ -6,7 +6,7 @@ import scipy
 from qtpy.QtGui import *
 import qtpy.QtWidgets as wid
 import sys
-
+#a
 a = []
 
 def m(p1, p2):
