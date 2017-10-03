@@ -114,15 +114,31 @@ def window():
     def fill():
         temp = [int(tx.text()), int(ty.text())]
         data.append(temp)
+        np.sort()
+        print(data)
         pass
-
-
+    labels =wid.QLabel(w)
+    labels.setGeometry(30, 130, 600, 300)
+    def mostrar ():
+        temp = ""
+        for i in range(0,np.size(data,0)):
+           temp = temp + "Valor x: " + str(data[i][0]) + " Valor Y: " + str(data[i][1]) + "\n"
+           print(temp)
+        labels.setText(temp)
+        pass
         # Boton 1
-
-    btn = wid.QPushButton(w)
-    btn.setText("Click Me!")
-    btn.move(200, 140)
-    btn.clicked.connect(fill)
+    
+    bta = []
+    bta.append(wid.QPushButton(w))
+    bta[0].setText("agregar valor!")
+    bta[0].move(200, 140)
+    bta[0].clicked.connect(fill)
+    
+    #btn 2
+    bta.append(wid.QPushButton(w))
+    bta[1].setText("Generar Spline!")
+    bta[1].move(400, 140)
+    bta[1].clicked.connect(mostrar)
 
     
     def draw(p):
@@ -155,8 +171,8 @@ def window():
                 aux.append((new_point[0] + 1, new_point[1] - 1))
         pass
 
-    p = [(0, 0), (2, 4), (3, 2), (6, 3), (6, 3), (7, 4), (8, 1)]
-    draw(p)
+    a = [(0, 0), (2, 4), (3, 2), (6, 3), (6, 3), (7, 4), (8, 1)]
+    draw(a)
     w.show()
     sys.exit(app.exec_())
 
