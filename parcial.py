@@ -103,6 +103,14 @@ def draw(p):
     plt.show()
     return
 
+def exist(ar,val): #Detect if X value already exist
+    answer = False
+    size = np.size(ar,0)
+    for i in range(0,size):
+        if ar[i][0] == val:
+            answer = True
+    return answer
+
 def window():
     # Variables
     data = []
@@ -113,7 +121,8 @@ def window():
     w.setWindowTitle("Trabajo de Algebra lineal: Splines Cubicos")
     # Labels and text
 
-
+    #Message box
+    
 
     # Title
     l = wid.QLabel(w)
@@ -146,11 +155,14 @@ def window():
     # Functions to add
     def fill():
         temp = (int(tx.text()), int(ty.text()))
-        add_point(temp)
-        data.append(temp)
-        np.sort(a)
-        np.sort(data)
-        print(data)
+        if exist(a,temp[0]):
+            wid.QMessageBox.warning(w, "Alerta", "No se puede agregar dos valores iguales en el eje x")
+        else:        
+            add_point(temp)
+            data.append(temp)
+            np.sort(a)
+            np.sort(data)
+            print(data)
         pass
     labels =wid.QLabel(w)
     labels.setGeometry(30, 130, 600, 300)
@@ -166,7 +178,11 @@ def window():
         i1.setGeometry(200,200,432,288)
         pass
         # Boton 1
-    
+    def clear():
+        a.clear()
+        data.clear()
+        labels.setText("")
+        
     bta = []
     bta.append(wid.QPushButton(w))
     bta[0].setText("agregar valor!")
@@ -176,9 +192,14 @@ def window():
     #btn 2
     bta.append(wid.QPushButton(w))
     bta[1].setText("Generar Spline!")
-    bta[1].move(400, 140)
+    bta[1].move(300, 140)
     bta[1].clicked.connect(mostrar)
 
+    bta.append(wid.QPushButton(w))
+    bta[2].setText("Limpiar valores")
+    bta[2].move(400, 140)
+    bta[2].clicked.connect(clear)
+    
     w.show()
     sys.exit(app.exec_())
 
