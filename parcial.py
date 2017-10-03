@@ -7,6 +7,7 @@ from qtpy.QtGui import *
 import qtpy.QtWidgets as wid
 import sys
 
+a = []
 
 def m(p1, p2):
     return (p2[1] - p1[1]) / (p2[0] - p1[0])
@@ -70,6 +71,41 @@ def interpolate(p):
     return f
     pass
 
+
+def add_point(point):
+    if a.__len__() % 4 == 0 and a.__len__() > 0:
+        new_point = a[a.__len__() - 1]
+        pen = m(a[a.__len__() - 2], new_point)
+        a.append(new_point)
+        if pen < 0:
+            a.append(((new_point[0] + 0.5), (new_point[1] - 1)))
+        else:
+            a.append(((new_point[0] + 0.5), (new_point[1] + 1)))
+    a.append(point)
+    pass
+
+def draw(p):
+    print (p)
+    final_data = []
+    aux  = p
+    if aux.__len__() == 0:
+        return
+    while aux.__len__() % 4 != 0:
+        aux.append((aux[aux.__len__() - 1][0] + 1, aux[aux.__len__() - 1][1]))
+    while not (aux.__len__() == 0):
+        final_data.extend(interpolate(aux[0:4]))
+        aux = aux[4:p.__len__()]
+    f_x = []
+    f_y = []
+    for i in range(0, final_data.__len__()):
+       f_x.append(final_data[i][0]) 
+       f_y.append(final_data[i][1]) 
+    plt.axis([p[0][0], p[p.__len__() - 1][0], -10, 10])
+    plt.plot(f_x, f_y)
+    plt.show()
+    plt.savefig('spline.png')
+    return
+
 def window():
     # Variables
     data = []
@@ -96,13 +132,13 @@ def window():
     # Textbox
     lx = wid.QLabel(w)
     lx.setText("Inserte valor en X: ")
-    lx.move(30, 120)
+    lx.move(10, 120)
     tx = wid.QLineEdit(w)
     tx.setGeometry(130, 115, 50, 20)
 
     ly = wid.QLabel(w)
     ly.setText("Inserte valor en Y: ")
-    ly.move(30, 150)
+    ly.move(10, 150)
     ty = wid.QLineEdit(w)
     ty.setGeometry(130, 145, 50, 20)
 
@@ -112,9 +148,11 @@ def window():
 
     # Functions to add
     def fill():
-        temp = [int(tx.text()), int(ty.text())]
+        temp = (int(tx.text()), int(ty.text()))
+        add_point(temp)
         data.append(temp)
-        np.sort()
+        np.sort(a)
+        np.sort(data)
         print(data)
         pass
     labels =wid.QLabel(w)
@@ -125,6 +163,8 @@ def window():
            temp = temp + "Valor x: " + str(data[i][0]) + " Valor Y: " + str(data[i][1]) + "\n"
            print(temp)
         labels.setText(temp)
+        #a = [(0, 0), (2, 4), (3, 2), (6, 3), (6, 3), (7, 4), (8, 1)]
+        draw(a)
         pass
         # Boton 1
     
@@ -140,39 +180,6 @@ def window():
     bta[1].move(400, 140)
     bta[1].clicked.connect(mostrar)
 
-    
-    def draw(p):
-        final_data = []
-        aux  = p
-        if aux.__len__() == 0:
-            return
-        while not (aux.__len__() == 0):
-            while aux.__len__() < 4:
-                aux.append((aux[aux.__len__() - 1][0] + 1, aux[aux.__len__() - 1][1]))
-            final_data.extend(interpolate(aux[0:4]))
-            aux = aux[4:p.__len__()]
-        f_x = []
-        f_y = []
-        for i in range(0, final_data.__len__()):
-           f_x.append(final_data[i][0]) 
-           f_y.append(final_data[i][1]) 
-        plt.axis([p[0][0], p[p.__len__() - 1][0], 0, 10])
-        plt.plot(f_x, f_y)
-        plt.savefig('spline.png')
-        return
-
-    def add_point(aux,point):
-        if aux.__len__() % 4 == 0:
-            aux.append(aux[aux.__len__() - 1])
-            new_point = aux[aux.__len__() - 1]
-            if (aux[aux.__len__() - 1][1] - point[1]) < 0:
-                aux.append((new_point[0] + 1, new_point[1] + 1))
-            else:
-                aux.append((new_point[0] + 1, new_point[1] - 1))
-        pass
-
-    a = [(0, 0), (2, 4), (3, 2), (6, 3), (6, 3), (7, 4), (8, 1)]
-    draw(a)
     w.show()
     sys.exit(app.exec_())
 
